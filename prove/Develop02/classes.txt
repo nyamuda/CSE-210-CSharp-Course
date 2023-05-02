@@ -1,0 +1,22 @@
+Class: Journal
+Attributes:
+* _entries : Entry
+
+Constructor
+*Journal
+
+Behaviors:
+* DisplayEntries : void
+
+
+Class: Entry
+Attributes:
+* _prompt : string
+* _response : string
+* _date : DateTime
+
+Constructor
+*Entry
+
+Behaviors:
+* DisplayEntry()

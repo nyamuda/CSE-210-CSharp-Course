@@ -4,29 +4,44 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        Scripture scripture = new Scripture("hello", "John3:16");
-        await scripture.fetchScriptureFromAPI("John3:16");
+        Console.Clear();
+        Console.WriteLine("Welcome to the Scripture Memorization Program!");
+        Console.WriteLine("Let's dive in and start memorizing together!");
 
-        // Console.WriteLine(scripture.getVerse());
-        // string scripture = "My name is tatenda and I live in Cape Town, South Africa";
-        // Service scriptureService = new Service(scripture);
+        Console.WriteLine();
+        Console.Write("Enter the scripture reference (e.g., John 3:16, Genesis 1:1-3, Daniel 1:8-9): ");
+        string scriptureReference = Console.ReadLine();
 
-        // string response = promptUser(scripture, scriptureService);
+        Scripture scripture = new Scripture();
 
-
-        // while (response != "quit")
-        // {
-
-        //     scriptureService.setScripture(scripture);
-        //     //create hidden scripture
-        //     scripture = scriptureService.hideScriptureWords();
-        //     response = promptUser(scripture, scriptureService);
+        //fetch the verse(s) from an API
+        await scripture.fetchScriptureFromAPI(scriptureReference);
 
 
 
+        Service scriptureService = new Service(scripture.getVerses());
+
+        //where we put the scripture with hidden words
+        string hiddenScripture = scripture.getVerses();
 
 
-        // }
+        string response = promptUser(hiddenScripture, scriptureService);
+
+
+        while (response != "quit")
+        {
+
+            scriptureService.setScripture(hiddenScripture);
+
+            //create hidden scripture
+            hiddenScripture = scriptureService.hideScriptureWords();
+            response = promptUser(hiddenScripture, scriptureService);
+
+        }
+
+
+        Console.WriteLine();
+        Console.WriteLine("Goodbye, and may your spiritual journey be filled with blessings!");
 
     }
 
@@ -42,13 +57,13 @@ class Program
         //if all words are hidden
         if (scriptureService.checkAllWordsHidden())
         {
-            Console.WriteLine();
+
             response = "quit";
         }
 
         else
         {
-            Console.WriteLine();
+
             Console.Write("Press enter to continue or type 'quit' to finish: ");
             response = Console.ReadLine();
 

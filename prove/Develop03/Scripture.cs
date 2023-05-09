@@ -4,31 +4,32 @@ using System.Text.Json;
 
 public class Scripture
 {
-    private List<string> _verse = new List<string>();
+    private List<string> _verses = new List<string>();
 
-    private Reference _reference;
+    private Reference _reference = new Reference();
 
-    public Scripture(string verse, string reference)
+
+    public void setVerses(string verse)
     {
-        this._verse.Add(verse);
-        this._reference = new Reference(reference);
-
-    }
-
-    public void setVerse(string verse)
-    {
-        this._verse.Add(verse);
+        this._verses.Add(verse);
     }
 
 
-    public List<string> getVerse()
+    public string getVerses()
     {
-        return this._verse;
+        string fullVerse = "";
+        for (int i = 0; i < this._verses.Count; i++)
+        {
+
+            fullVerse += this._verses[i];
+        }
+
+        return fullVerse;
     }
 
-    public Reference getReference()
+    public string getReference()
     {
-        return this._reference;
+        return this._reference.getReference();
     }
 
 
@@ -47,7 +48,6 @@ public class Scripture
                 // Check if the response is successful
                 if (response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine(response);
                     // Read the response content as a stream
                     using Stream verseData = await response.Content.ReadAsStreamAsync();
 
@@ -66,9 +66,8 @@ public class Scripture
                     {
                         //the verse we want
                         string beautifulVerse = verseElement.GetProperty("text").ToString();
-                        this._verse.Add(beautifulVerse);
+                        this._verses.Add(beautifulVerse);
                     }
-                    Console.WriteLine(reference);
 
 
                 }

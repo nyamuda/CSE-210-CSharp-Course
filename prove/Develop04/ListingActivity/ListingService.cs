@@ -1,7 +1,7 @@
 using System;
 
-//The following class contains the business logic for the breathing activity
-public class ListingService
+//The following class contains the business logic for the Listing activity
+public class ListingService : IActivityService
 {
 
 
@@ -11,105 +11,16 @@ public class ListingService
     {
 
 
-        //split the duration into pieces of seconds
-        //where their sums will be equal to the duration
-        List<int> splitSeconds = generateRandomNumbers(duration);
-
-
-        Console.WriteLine();
-        this.thinkPrompt();
-        Console.Clear();
-        for (int i = 0; i < splitSeconds.Count; i++)
-        {
-            this.reflectPrompt(splitSeconds[i]);
-        }
+        thinkPrompt();
+        userInput(duration);
 
 
     }
 
-
-    // display the first prompt for the user to think about
-    public void thinkPrompt()
+    //show the seconds for a listing activity
+    public void countDownTimer(int randomSeconds, string sentence)
     {
-        List<string> prompts = new List<string>();
-
-        prompts.Add("Think of a time when you stood up for someone else");
-        prompts.Add("Think of a time when you did something really difficult.");
-        prompts.Add("Think of a time when you helped someone in need.");
-        prompts.Add("Think of a time when you did something truly selfless.");
-
-        Random random = new Random();
-        int randValue = random.Next(0, prompts.Count - 1);
-
-        string prompt = prompts[randValue];
-
-        Console.WriteLine("Consider the following prompt:");
-        Console.WriteLine();
-
-        Console.WriteLine($"---- {prompt} ----");
-
-        Console.WriteLine();
-
-        Console.WriteLine("When you have something in mind, press enter to continue.");
-
-
-        //wait for the use to press enter
-        while (true)
-        {
-            ConsoleKeyInfo keyInfo = Console.ReadKey(intercept: true);
-
-            if (keyInfo.Key == ConsoleKey.Enter)
-            {
-                int randSeconds = random.Next(3, 6);
-
-
-
-
-                //show the countdown timer before the user gets started
-                Console.WriteLine();
-                Console.WriteLine("Now ponder each of the following questions as they relate to this experience:");
-                this.countDownTimer(randSeconds);
-
-                break;
-            }
-        }
-
-
-    }
-
-
-    //the reflection prompts
-    public void reflectPrompt(int seconds)
-    {
-        List<string> prompts = new List<string>();
-
-        prompts.Add("Why was this experience meaningful to you?");
-        prompts.Add("Have you ever done anything like this before?");
-        prompts.Add("How did you get started?");
-        prompts.Add("How did you feel when it was complete?");
-        prompts.Add("What made this time different than other times when you were not as successful?");
-        prompts.Add("What is your favorite thing about this experience?");
-        prompts.Add("What could you learn from this experience that applies to other situations?");
-        prompts.Add("What did you learn about yourself through this experience?");
-
-        Random random = new Random();
-        int randValue = random.Next(0, prompts.Count - 1);
-
-        string prompt = prompts[randValue];
-
-        //show prompt and spinner
-        Console.Write($"> {prompt} ");
-        Activity.runSpinnerAnimation(seconds, seconds);
-        Console.WriteLine();
-
-    }
-
-
-
-    //show the seconds for a breath in or out activity
-    private void countDownTimer(int randomSeconds)
-    {
-        Console.Write($"You may begin in: ");
+        Console.Write($"{sentence}...");
         for (int i = randomSeconds; i > 0; i--)
         {
 
@@ -148,6 +59,62 @@ public class ListingService
 
         return randomNumbers;
     }
+
+
+
+    // display the first prompt for the user to think about
+    public void thinkPrompt()
+    {
+        List<string> prompts = new List<string>();
+
+        prompts.Add("Who are people that you appreciate?");
+        prompts.Add("What are personal strengths of yours?");
+        prompts.Add("Who are people that you have helped this week?");
+        prompts.Add("When have you felt the Holy Ghost this month?");
+        prompts.Add("Who are some of your personal heroes?");
+
+        Random random = new Random();
+        int randValue = random.Next(0, prompts.Count - 1);
+
+        string prompt = prompts[randValue];
+        Console.WriteLine();
+        Console.WriteLine("List as many responses as you can to the following prompt:");
+        Console.WriteLine();
+
+        Console.WriteLine($"---- {prompt} ----");
+
+        Console.WriteLine();
+
+
+
+        //show the countdown timer before the user gets started
+        int randSeconds = random.Next(3, 6);
+        this.countDownTimer(randSeconds, "You may begin in");
+        Console.WriteLine();
+    }
+
+
+    //listen an get the user user input
+    //the input will be multiple sentences
+    public void userInput(int seconds)
+    {
+        List<string> entries = new List<string>();
+
+        DateTime currentTime = DateTime.Now;
+        DateTime endTime = currentTime.AddSeconds(seconds);
+
+        while (DateTime.Now < endTime)
+        {
+            Console.Write("* ");
+            Console.Write("");
+            string input = Console.ReadLine().Trim();
+            entries.Add(input);
+        }
+
+        Console.WriteLine($"You listed {entries.Count} items!");
+
+    }
+
 
 
 

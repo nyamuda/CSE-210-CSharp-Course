@@ -4,8 +4,6 @@ class Program
     static void Main(string[] args)
     {
 
-
-
         int optionValue = selectOption();
 
         while (optionValue < 1 || optionValue > 4)
@@ -23,20 +21,33 @@ class Program
             breathing.greetingMessage();
             breathing.startBreathingActivity();
             breathing.sayGoodbye();
+            optionValue = selectOption();
         }
+        //Reflection Activity
         if (optionValue == 2)
+        {
+            string message = "This activity will help you reflect on times in your life when you have shown strength and resilience. This will help you recognize the power you have and how you can use it in other aspects of your life.";
+            Reflection reflection = new Reflection("Reflection", message);
+            reflection.greetingMessage();
+            reflection.startReflectionActivity();
+            reflection.sayGoodbye();
+            optionValue = selectOption();
+        }
+        //Listing Activity
+        if (optionValue == 3)
         {
             string message = "This activity will help you reflect on the good things in your life by having you list as many things as you can in a certain area.";
             Listing listing = new Listing("Listing", message);
             listing.greetingMessage();
             listing.startListingActivity();
             listing.sayGoodbye();
+            optionValue = selectOption();
         }
 
-        if (optionValue == 3)
-        {
 
-        }
+        Console.WriteLine();
+        Console.WriteLine("Goodbye.");
+
 
     }
 
@@ -48,10 +59,12 @@ class Program
         List<String> options = new List<String>();
 
         options.Add("Start breathing activity");
-        options.Add("Start reflecting activity");
+        options.Add("Start reflection activity");
         options.Add("Start listing activity");
         options.Add("Quit");
 
+
+        Console.Clear();
         Console.WriteLine("Menu Options:");
         for (int i = 0; i < options.Count; i++)
         {

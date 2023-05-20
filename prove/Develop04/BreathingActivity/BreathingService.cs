@@ -1,7 +1,7 @@
 using System;
 
 //The following class contains the business logic for the breathing activity
-public class BreathingService
+public class BreathingService : IActivityService
 {
 
 
@@ -36,7 +36,7 @@ public class BreathingService
 
 
     //show the seconds for a breath in or out activity
-    private void countDownTimer(int randomSeconds, string breathType)
+    public void countDownTimer(int randomSeconds, string breathType)
     {
         Console.Write($"{breathType}...");
         for (int i = randomSeconds; i > 0; i--)

@@ -13,7 +13,7 @@ class Program
         var selectedGeneralOption = LoadGeneralMenu();
 
 
-        while (selectedGeneralOption != 5)
+        while (selectedGeneralOption != 6)
         {
             //CREATE NEW GOAL
             if (selectedGeneralOption == 1)
@@ -54,6 +54,15 @@ class Program
                 GoalFile.LoadGoals();
                 DisplayCurrentTotalPoints();
                 selectedGeneralOption = LoadGeneralMenu();
+            }
+
+            //RECORD EVENT
+            if (selectedGeneralOption == 5)
+            {
+                GoalService.AccomplishSimpleGoal();
+                DisplayCurrentTotalPoints();
+                selectedGeneralOption = LoadGeneralMenu();
+
             }
 
 

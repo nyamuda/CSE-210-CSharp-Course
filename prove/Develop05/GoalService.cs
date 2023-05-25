@@ -64,8 +64,48 @@ public static class GoalService
 
         var simpleGoal = new SimpleGoal(name, description, targetPoints);
         simpleGoal.GoalType = "Simple Goal";
+        simpleGoal.CurrentPoints = 0;
 
         _allGoals.Add(simpleGoal);
+
+
+    }
+
+    public static void AccomplishSimpleGoal()
+    {
+        var currentSimpleGoals = new List<Goal>();
+
+        //get simple goals
+        foreach (var goal in _allGoals)
+        {
+            if (goal.GoalType.Equals("Simple Goal"))
+            {
+                currentSimpleGoals.Add(goal);
+            }
+        }
+
+        //show the menu
+        Console.WriteLine("Your current simple goals are: ");
+        for (int i = 0; i < currentSimpleGoals.Count; i++)
+        {
+            Console.WriteLine($"{i + 1}. {currentSimpleGoals[i].Name}");
+        }
+
+
+
+
+        //the simple goal accomplished
+        Console.Write("Which goal did you accomplish? ");
+        int optionSelected = int.Parse(Console.ReadLine());
+        Goal accomplishedGoal = currentSimpleGoals[optionSelected - 1];
+
+
+        //add points
+        int pointsEarned = 50;
+        accomplishedGoal.CurrentPoints += pointsEarned;
+
+        Console.WriteLine($"Congratulations! You have earned {pointsEarned} points.");
+
 
 
     }

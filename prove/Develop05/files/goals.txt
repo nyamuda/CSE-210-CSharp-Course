@@ -1,3 +1,3 @@
 Goal_Type|Goal_Name|Goal_Description|Target_Points|Current_Points
-Simple Goal|C#|Finally land the job. I know I can do it.|100|0
+Simple Goal|C#|Finally land the job. I know I can do it.|100|100
 Simple Goal|hello|hello|50|0

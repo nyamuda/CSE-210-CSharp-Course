@@ -11,13 +11,23 @@ public class Goal
 
 
 
-    public Goal(string name, string description, int targetPoints)
+    public Goal(string goalType, string name, string description, int targetPoints)
     {
+        this.GoalType = goalType;
         this.Name = name;
         this.Description = description;
         this.TargetPoints = targetPoints;
 
+
     }
+
+    public Goal(string name, string description)
+    {
+        Name = name;
+        Description = description;
+    }
+
+    public Goal() { }
 
     public virtual bool IsComplete()
     {
@@ -40,6 +50,23 @@ public class Goal
         }
         return $"[] {this.Name} ({this.Description})";
 
+
+    }
+
+    public virtual void CreateGoalInfo()
+    {
+        Console.Write("What is the name of your goal? ");
+        var name = Console.ReadLine();
+        Console.Write("What is a short description of it? ");
+        var description = Console.ReadLine();
+        Console.Write("What is the number of points associated with this goal? ");
+        var targetPoints = int.Parse(Console.ReadLine());
+
+
+        this.Name = name;
+        this.Description = description;
+        this.TargetPoints = targetPoints;
+        this.CurrentPoints = 0;
 
     }
 

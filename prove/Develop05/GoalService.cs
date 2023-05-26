@@ -51,22 +51,12 @@ public static class GoalService
 
     }
 
-    public static void CreateSimpleGoal()
+    public static void CreateChecklistGoal()
     {
+        var checkListGoal = new ChecklistGoal();
+        checkListGoal.CreateGoalInfo();
 
-        Console.Write("What is the name of your goal? ");
-        var name = Console.ReadLine();
-        Console.Write("What is a short description of it? ");
-        var description = Console.ReadLine();
-        Console.Write("What is the number of points associated with this goal? ");
-        var targetPoints = int.Parse(Console.ReadLine());
-
-
-        var simpleGoal = new SimpleGoal(name, description, targetPoints);
-        simpleGoal.GoalType = "Simple Goal";
-        simpleGoal.CurrentPoints = 0;
-
-        _allGoals.Add(simpleGoal);
+        _allGoals.Add(checkListGoal);
 
 
     }

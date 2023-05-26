@@ -14,7 +14,7 @@ public static class GoalFile
 
         using (StreamWriter writer = new StreamWriter(filePath))
         {
-            writer.WriteLine("Goal_Type|Goal_Name|Goal_Description|Target_Points|Current_Points");
+            writer.WriteLine("Goal_Type|Goal_Name|Goal_Description|Target_Points|Current_Points|Bonus|Times_Required|Times_Accomplished");
 
             foreach (var goal in GoalService.GetGoals())
             {
@@ -64,9 +64,8 @@ public static class GoalFile
                 var currentPoints = int.Parse(fields[4]);
 
                 //create goal
-                var goal = new Goal(name, description, targetPoints);
-                goal.GoalType = goalType;
-                goal.CurrentPoints = currentPoints;
+                var goal = new Goal(goalType, name, description, targetPoints);
+
 
                 //add goal to the service
                 GoalService.AddGoal(goal);

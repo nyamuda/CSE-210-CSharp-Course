@@ -51,6 +51,8 @@ public static class GoalService
 
     }
 
+    // CREATE GOALS
+
     public static void CreateChecklistGoal()
     {
         var checkListGoal = new ChecklistGoal();
@@ -61,44 +63,130 @@ public static class GoalService
 
     }
 
-    public static void AccomplishSimpleGoal()
+    public static void CreateSimpleGoal()
     {
-        var currentSimpleGoals = new List<Goal>();
+        var simpleGoal = new SimpleGoal();
+        simpleGoal.CreateGoalInfo();
 
-        //get simple goals
-        foreach (var goal in _allGoals)
+        _allGoals.Add(simpleGoal);
+
+    }
+
+    public static void CreateEternalGoal()
+    {
+        var eternalGoal = new EternalGoal();
+        eternalGoal.CreateGoalInfo();
+
+        _allGoals.Add(eternalGoal);
+
+
+    }
+
+
+
+
+    // ACCOMPLISH GOALS
+
+    public static void AccomplishGoal()
+    {
+
+        //show the uncompleted goals
+        Console.WriteLine("Your current goals are: ");
+        for (int i = 0; i < _allGoals.Count; i++)
         {
-            if (goal.GoalType.Equals("Simple Goal"))
+            //if the goal is not complete
+            if (!_allGoals[i].IsComplete())
             {
-                currentSimpleGoals.Add(goal);
+                Console.WriteLine($"{i + 1}. {_allGoals[i].Name}");
             }
-        }
 
-        //show the menu
-        Console.WriteLine("Your current simple goals are: ");
-        for (int i = 0; i < currentSimpleGoals.Count; i++)
-        {
-            Console.WriteLine($"{i + 1}. {currentSimpleGoals[i].Name}");
         }
 
 
 
 
-        //the simple goal accomplished
+        //get the goal accomplished
         Console.Write("Which goal did you accomplish? ");
         int optionSelected = int.Parse(Console.ReadLine());
-        Goal accomplishedGoal = currentSimpleGoals[optionSelected - 1];
+        Goal accomplishedGoal = _allGoals[optionSelected - 1];
 
 
-        //add points
-        int pointsEarned = 50;
-        accomplishedGoal.CurrentPoints += pointsEarned;
+        int earnedPoints = 0;
+        //only if the goal is not complete
+        if (!accomplishedGoal.IsComplete())
+        {
+            if (accomplishedGoal.GoalType.Equals("Simple Goal"))
+            {
+                earnedPoints = AccomplishSimpleGoal(accomplishedGoal);
+            }
 
-        Console.WriteLine($"Congratulations! You have earned {pointsEarned} points.");
+            if (accomplishedGoal.GoalType.Equals("Checklist Goal"))
+            {
+                earnedPoints = AccomplishChecklistGoal((ChecklistGoal)accomplishedGoal);
+
+            }
+            if (accomplishedGoal.GoalType.Equals("Eternal Goal"))
+            {
+                earnedPoints = AccomplishEternalGoal(accomplishedGoal);
+
+            }
+
+        }
+
+
+
+
+        Console.WriteLine($"Congratulations! You have earned {earnedPoints} points.");
 
 
 
     }
+
+
+    private static int AccomplishSimpleGoal(Goal goal)
+    {
+        int earnedPoints = goal.TargetPoints;
+        goal.CurrentPoints += earnedPoints;
+
+        return earnedPoints;
+
+
+    }
+
+    private static int AccomplishChecklistGoal(ChecklistGoal goal)
+    {
+        //if this is the final time
+        if (goal.NumberOfTimesRequired - goal.NumberAccomplished == 1)
+        {
+            //add bonus to the current points
+            goal.CurrentPoints += goal.Bonus;
+            goal.NumberAccomplished += 1;
+
+            return goal.Bonus;
+        }
+
+        //add points
+        int earnedPoints = goal.TargetPoints;
+        goal.CurrentPoints += earnedPoints;
+
+        //add to the total number of tasks completed
+        goal.NumberAccomplished += 1;
+
+        return earnedPoints;
+
+
+    }
+
+    private static int AccomplishEternalGoal(Goal goal)
+    {
+        int earnedPoints = goal.TargetPoints;
+        goal.CurrentPoints += earnedPoints;
+
+        return earnedPoints;
+
+
+    }
+
 
 
 }

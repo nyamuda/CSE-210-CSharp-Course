@@ -11,16 +11,16 @@ public class Goal
 
 
 
-    public Goal(string goalType, string name, string description, int targetPoints)
+    public Goal(string goalType, string name, string description, int targetPoints, int currentPoints = 0)
     {
         this.GoalType = goalType;
         this.Name = name;
         this.Description = description;
         this.TargetPoints = targetPoints;
+        this.CurrentPoints = currentPoints;
 
 
     }
-
     public Goal(string name, string description)
     {
         Name = name;

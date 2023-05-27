@@ -7,7 +7,7 @@ public static class GoalFile
 
 
     //Save all the current goals to a file (.csv)
-    public static void SaveGoals()
+    private static void SaveGoals()
     {
 
         var filePath = $"./files/{GoalsFileName}";
@@ -18,16 +18,28 @@ public static class GoalFile
 
             foreach (var goal in GoalService.GetGoals())
             {
-                var goalType = goal.GoalType;
-                var name = goal.Name;
-                var description = goal.Description;
-                var targetPoints = goal.TargetPoints;
-                var currentPoints = goal.CurrentPoints;
 
-                var fullGoalInfo = $"{goalType}|{name}|{description}|{targetPoints}|{currentPoints}";
 
-                //check to see if the doesn't already exists in the file
+                var fullGoalInfo = "";
 
+                //checklist goal has more fields
+                if (goal.GoalType.Equals("Checklist Goal"))
+                {
+                    fullGoalInfo = SaveChecklistGoal((ChecklistGoal)goal);
+
+                }
+
+                else
+                {
+                    var goalType = goal.GoalType;
+                    var name = goal.Name;
+                    var description = goal.Description;
+                    var targetPoints = goal.TargetPoints;
+                    var currentPoints = goal.CurrentPoints;
+
+
+                    fullGoalInfo = $"{goalType}|{name}|{description}|{targetPoints}|{currentPoints}";
+                }
                 writer.WriteLine(fullGoalInfo);
             }
 
@@ -63,20 +75,56 @@ public static class GoalFile
                 var targetPoints = int.Parse(fields[3]);
                 var currentPoints = int.Parse(fields[4]);
 
-                //create goal
-                var goal = new Goal(goalType, name, description, targetPoints);
 
 
-                //add goal to the service
-                GoalService.AddGoal(goal);
+
+                //checklist goal has this extra fields
+                if (goalType.Equals("Checklist Goal"))
+                {
+
+
+                    //the extra fields a checklist goal has
+                    var bonus = fields[5];
+                    var timesRequired = fields[6];
+                    var timesAccomplished = fields[7];
+
+                    //create goal
+                    var goal = new ChecklistGoal(goalType, name, description, targetPoints);
+                    goal.Bonus = int.Parse(bonus);
+                    goal.NumberOfTimesRequired = int.Parse(timesRequired);
+                    goal.NumberAccomplished = int.Parse(timesAccomplished);
+                    //add goal to the service
+                    GoalService.AddGoal(goal);
+
+                }
+
+                if (goalType.Equals("Simple Goal"))
+                {
+                    var goal = new SimpleGoal(goalType, name, description, targetPoints);
+                    //add goal to the service
+                    GoalService.AddGoal(goal);
+
+                }
+                if (goalType.Equals("Eternal Goal"))
+                {
+                    var goal = new EternalGoal(goalType, name, description, targetPoints);
+                    //add goal to the service
+                    GoalService.AddGoal(goal);
+
+                }
+
+
 
             }
         }
 
+
+
+
     }
 
 
-    //The function checks to is if there any goals to save
+    //The function checks to see if there any goals to save
     public static void SaveToFile()
     {
         //if there are not goals
@@ -94,24 +142,42 @@ public static class GoalFile
         }
     }
 
-    //check to see if goal doesn't already exists in the file
-    public static bool goalExistsAlready(string goal)
+    // //check to see if goal doesn't already exists in the file
+    // public static bool goalExistsAlready(string goal)
+    // {
+    //     var filePath = $"./files/{GoalsFileName}";
+    //     using (StreamReader reader = new StreamReader(filePath))
+    //     {
+    //         var line = reader.ReadLine();
+    //         if (line != null)
+    //         {
+    //             if (line == goal)
+    //             {
+    //                 return true;
+    //             }
+
+    //         }
+
+    //     }
+    //     return false;
+    // }
+
+    private static string SaveChecklistGoal(ChecklistGoal goal)
     {
-        var filePath = $"./files/{GoalsFileName}";
-        using (StreamReader reader = new StreamReader(filePath))
-        {
-            var line = reader.ReadLine();
-            if (line != null)
-            {
-                if (line == goal)
-                {
-                    return true;
-                }
+        var goalType = goal.GoalType;
+        var name = goal.Name;
+        var description = goal.Description;
+        var targetPoints = goal.TargetPoints;
+        var currentPoints = goal.CurrentPoints;
+        var bonus = goal.Bonus;
+        var timesRequired = goal.NumberOfTimesRequired;
+        var timesAccomplished = goal.NumberAccomplished;
+        var fullGoalInfo = $"{goalType}|{name}|{description}|{targetPoints}|{currentPoints}|{bonus}|{timesRequired}|{timesAccomplished}";
 
-            }
+        return fullGoalInfo;
 
-        }
-        return false;
     }
+
+
 
 }

@@ -17,10 +17,10 @@ public class ChecklistGoal : Goal
     {
         if (IsComplete())
         {
-            var goal = $"[x] {this.Name} ({this.Description})";
+            var goal = $"[x] {this.Name} ({this.Description}) --- Goal completed: {this.NumberAccomplished}/{this.NumberOfTimesRequired}";
             return goal;
         }
-        return $"[] {this.Name} ({this.Description})";
+        return $"[] {this.Name} ({this.Description}) --- Currently completed: {this.NumberAccomplished}/{this.NumberOfTimesRequired}";
     }
 
     public override void CreateGoalInfo()
@@ -42,10 +42,10 @@ public class ChecklistGoal : Goal
 
 
 
-        this.GoalType = "Checklist Goal";
+
         this.Name = name;
         this.Description = description;
-        this.TargetPoints = targetPoints * numberOfTimesRequired;
+        this.TargetPoints = targetPoints;
         this.CurrentPoints = 0;
         this.NumberOfTimesRequired = numberOfTimesRequired;
         this.NumberAccomplished = 0;

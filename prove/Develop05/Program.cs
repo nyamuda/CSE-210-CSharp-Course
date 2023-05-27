@@ -29,6 +29,23 @@ class Program
                     selectedGeneralOption = LoadGeneralMenu();
                 }
 
+                //create eternal goal
+                if (selectedGoalOption == 2)
+                {
+                    GoalService.CreateEternalGoal();
+                    DisplayCurrentTotalPoints();
+                    selectedGeneralOption = LoadGeneralMenu();
+                }
+
+                //create checklist goal
+                if (selectedGoalOption == 3)
+                {
+                    GoalService.CreateChecklistGoal();
+                    DisplayCurrentTotalPoints();
+                    selectedGeneralOption = LoadGeneralMenu();
+                }
+
+
             }
 
 
@@ -59,7 +76,7 @@ class Program
             //RECORD EVENT
             if (selectedGeneralOption == 5)
             {
-                GoalService.AccomplishSimpleGoal();
+                GoalService.AccomplishGoal();
                 DisplayCurrentTotalPoints();
                 selectedGeneralOption = LoadGeneralMenu();
 

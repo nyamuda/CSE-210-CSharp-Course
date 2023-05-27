@@ -1,22 +1,16 @@
 using System;
 
-public class EternalGoal : Goal
+public class SimpleGoal : Goal
 
 {
 
-    public EternalGoal(string GoalType, string Name, string Description, int TargetPoints) : base(GoalType, Name, Description, TargetPoints) { }
+    public SimpleGoal(string GoalType, string Name, string Description, int TargetPoints) : base(GoalType, Name, Description, TargetPoints) { }
 
 
 
-    public EternalGoal() { }
+    public SimpleGoal() { }
 
 
-
-    //Eternal goal is never complete
-    public override bool IsComplete()
-    {
-        return false;
-    }
 
     public override void CreateGoalInfo()
     {
@@ -30,7 +24,7 @@ public class EternalGoal : Goal
 
 
 
-        this.GoalType = "Eternal Goal";
+        this.GoalType = "Simple Goal";
         this.Name = name;
         this.Description = description;
         this.TargetPoints = targetPoints;

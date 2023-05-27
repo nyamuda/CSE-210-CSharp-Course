@@ -9,81 +9,100 @@ class Program
         DisplayCurrentTotalPoints();
 
 
-        //load general options
-        var selectedGeneralOption = LoadGeneralMenu();
 
-
-        while (selectedGeneralOption != 6)
+        try
         {
-            //CREATE NEW GOAL
-            if (selectedGeneralOption == 1)
-            {
-                //load goal options
-                var selectedGoalOption = LoadGoalMenu();
+            //load general options
+            var selectedGeneralOption = LoadGeneralMenu();
 
-                //create simple goal
-                if (selectedGoalOption == 1)
+
+            while (selectedGeneralOption != 6)
+            {
+                //CREATE NEW GOAL
+                if (selectedGeneralOption == 1)
                 {
-                    GoalService.CreateSimpleGoal();
+                    //load goal options
+                    var selectedGoalOption = LoadGoalMenu();
+
+                    //create simple goal
+                    if (selectedGoalOption == 1)
+                    {
+                        GoalService.CreateSimpleGoal();
+                        DisplayCurrentTotalPoints();
+                        selectedGeneralOption = LoadGeneralMenu();
+                    }
+
+                    //create eternal goal
+                    if (selectedGoalOption == 2)
+                    {
+                        GoalService.CreateEternalGoal();
+                        DisplayCurrentTotalPoints();
+                        selectedGeneralOption = LoadGeneralMenu();
+                    }
+
+                    //create checklist goal
+                    if (selectedGoalOption == 3)
+                    {
+                        GoalService.CreateChecklistGoal();
+                        DisplayCurrentTotalPoints();
+                        selectedGeneralOption = LoadGeneralMenu();
+                    }
+
+
+                }
+
+
+                //LIST THE GOALS
+                if (selectedGeneralOption == 2)
+                {
+                    GoalService.ListGoalsInfo();
                     DisplayCurrentTotalPoints();
                     selectedGeneralOption = LoadGeneralMenu();
                 }
 
-                //create eternal goal
-                if (selectedGoalOption == 2)
+                //SAVE GOALS TO A FILE
+                if (selectedGeneralOption == 3)
                 {
-                    GoalService.CreateEternalGoal();
+                    GoalFile.SaveToFile();
                     DisplayCurrentTotalPoints();
                     selectedGeneralOption = LoadGeneralMenu();
                 }
 
-                //create checklist goal
-                if (selectedGoalOption == 3)
+                //LOAD GOALS FROM A FILE
+                if (selectedGeneralOption == 4)
                 {
-                    GoalService.CreateChecklistGoal();
+                    GoalFile.LoadGoals();
                     DisplayCurrentTotalPoints();
                     selectedGeneralOption = LoadGeneralMenu();
+                }
+
+                //RECORD EVENT
+                if (selectedGeneralOption == 5)
+                {
+                    GoalService.AccomplishGoal();
+                    DisplayCurrentTotalPoints();
+                    selectedGeneralOption = LoadGeneralMenu();
+
                 }
 
 
             }
 
+        }
+        catch (System.FormatException)
+        {
 
-            //LIST THE GOALS
-            if (selectedGeneralOption == 2)
-            {
-                GoalService.ListGoalsInfo();
-                DisplayCurrentTotalPoints();
-                selectedGeneralOption = LoadGeneralMenu();
-            }
+            Console.WriteLine();
+            Console.WriteLine("Invalid option selected.");
+            Console.WriteLine();
 
-            //SAVE GOALS TO A FILE
-            if (selectedGeneralOption == 3)
-            {
-                GoalFile.SaveToFile();
-                DisplayCurrentTotalPoints();
-                selectedGeneralOption = LoadGeneralMenu();
-            }
 
-            //LOAD GOALS FROM A FILE
-            if (selectedGeneralOption == 4)
-            {
-                GoalFile.LoadGoals();
-                DisplayCurrentTotalPoints();
-                selectedGeneralOption = LoadGeneralMenu();
-            }
-
-            //RECORD EVENT
-            if (selectedGeneralOption == 5)
-            {
-                GoalService.AccomplishGoal();
-                DisplayCurrentTotalPoints();
-                selectedGeneralOption = LoadGeneralMenu();
-
-            }
 
 
         }
+        Console.WriteLine();
+        Console.WriteLine("Goodbye.");
+        Console.WriteLine();
 
 
     }

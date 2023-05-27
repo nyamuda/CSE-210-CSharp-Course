@@ -1,3 +1,4 @@
-Goal_Type|Goal_Name|Goal_Description|Target_Points|Current_Points
-Simple Goal|C#|Finally land the job. I know I can do it.|100|100
-Simple Goal|hello|hello|50|0
+Goal_Type|Goal_Name|Goal_Description|Target_Points|Current_Points|Bonus|Times_Required|Times_Accomplished
+Checklist Goal|Study hard|Take small steps|50|300|100|5|5
+Eternal Goal|Meditate|I need to improve myself|50|150
+Simple Goal|Read|Become better|50|50

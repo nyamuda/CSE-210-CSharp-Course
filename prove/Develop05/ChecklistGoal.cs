@@ -13,6 +13,12 @@ public class ChecklistGoal : Goal
 
     public ChecklistGoal() { }
 
+
+    public override bool IsComplete()
+    {
+        return NumberAccomplished >= NumberOfTimesRequired;
+    }
+
     public override string GetGoalInfo()
     {
         if (IsComplete())
@@ -37,10 +43,8 @@ public class ChecklistGoal : Goal
         var numberOfTimesRequired = int.Parse(Console.ReadLine());
 
 
-        Console.WriteLine("What is the bonus for accomplishing it that many times?");
+        Console.Write("What is the bonus for accomplishing it that many times? ");
         var bonus = int.Parse(Console.ReadLine());
-
-
 
 
         this.Name = name;
@@ -50,5 +54,6 @@ public class ChecklistGoal : Goal
         this.NumberOfTimesRequired = numberOfTimesRequired;
         this.NumberAccomplished = 0;
         this.Bonus = bonus;
+        this.GoalType = "Checklist Goal";
     }
 }

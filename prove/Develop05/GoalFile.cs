@@ -23,7 +23,7 @@ public static class GoalFile
                 var fullGoalInfo = "";
 
                 //checklist goal has more fields
-                if (goal.GoalType.Equals("Checklist Goal"))
+                if (goal.GoalType == "Checklist Goal")
                 {
                     fullGoalInfo = SaveChecklistGoal((ChecklistGoal)goal);
 
@@ -55,69 +55,84 @@ public static class GoalFile
 
     public static void LoadGoals()
     {
-        Console.Write("What is the filename for the goal file? ");
-        GoalsFileName = Console.ReadLine();
-        var filePath = $"./files/{GoalsFileName}";
-        using (TextFieldParser parser = new TextFieldParser(filePath))
+        try
         {
-            parser.TextFieldType = FieldType.Delimited;
-            parser.SetDelimiters("|");
-
-            //skip the first line
-            parser.ReadLine();
-
-            while (!parser.EndOfData)
+            Console.Write("What is the filename for the goal file? ");
+            GoalsFileName = Console.ReadLine();
+            var filePath = $"./files/{GoalsFileName}";
+            using (TextFieldParser parser = new TextFieldParser(filePath))
             {
-                string[] fields = parser.ReadFields();
-                var goalType = fields[0];
-                var name = fields[1];
-                var description = fields[2];
-                var targetPoints = int.Parse(fields[3]);
-                var currentPoints = int.Parse(fields[4]);
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters("|");
 
+                //skip the first line
+                parser.ReadLine();
 
-
-
-                //checklist goal has this extra fields
-                if (goalType.Equals("Checklist Goal"))
+                while (!parser.EndOfData)
                 {
+                    string[] fields = parser.ReadFields();
+                    var goalType = fields[0];
+                    var name = fields[1];
+                    var description = fields[2];
+                    var targetPoints = int.Parse(fields[3]);
+                    var currentPoints = int.Parse(fields[4]);
 
 
-                    //the extra fields a checklist goal has
-                    var bonus = fields[5];
-                    var timesRequired = fields[6];
-                    var timesAccomplished = fields[7];
 
-                    //create goal
-                    var goal = new ChecklistGoal(goalType, name, description, targetPoints);
-                    goal.Bonus = int.Parse(bonus);
-                    goal.NumberOfTimesRequired = int.Parse(timesRequired);
-                    goal.NumberAccomplished = int.Parse(timesAccomplished);
-                    //add goal to the service
-                    GoalService.AddGoal(goal);
+
+                    //checklist goal has this extra fields
+                    if (goalType.Equals("Checklist Goal"))
+                    {
+
+
+                        //the extra fields a checklist goal has
+                        var bonus = fields[5];
+                        var timesRequired = fields[6];
+                        var timesAccomplished = fields[7];
+
+                        //create goal
+                        var goal = new ChecklistGoal(goalType, name, description, targetPoints);
+                        goal.Bonus = int.Parse(bonus);
+                        goal.NumberOfTimesRequired = int.Parse(timesRequired);
+                        goal.NumberAccomplished = int.Parse(timesAccomplished);
+                        goal.CurrentPoints = currentPoints;
+                        //add goal to the service
+                        GoalService.AddGoal(goal);
+
+                    }
+
+                    if (goalType.Equals("Simple Goal"))
+                    {
+                        var goal = new SimpleGoal(goalType, name, description, targetPoints);
+                        //add goal to the service
+                        GoalService.AddGoal(goal);
+                        goal.CurrentPoints = currentPoints;
+
+                    }
+                    if (goalType.Equals("Eternal Goal"))
+                    {
+                        var goal = new EternalGoal(goalType, name, description, targetPoints);
+                        //add goal to the service
+                        GoalService.AddGoal(goal);
+                        goal.CurrentPoints = currentPoints;
+
+                    }
+
+
 
                 }
-
-                if (goalType.Equals("Simple Goal"))
-                {
-                    var goal = new SimpleGoal(goalType, name, description, targetPoints);
-                    //add goal to the service
-                    GoalService.AddGoal(goal);
-
-                }
-                if (goalType.Equals("Eternal Goal"))
-                {
-                    var goal = new EternalGoal(goalType, name, description, targetPoints);
-                    //add goal to the service
-                    GoalService.AddGoal(goal);
-
-                }
-
-
-
             }
-        }
 
+        }
+        catch (System.IO.FileNotFoundException)
+        {
+
+            Console.WriteLine();
+
+            Console.WriteLine("Sorry, the file doesn't exists.");
+
+            Console.WriteLine();
+        }
 
 
 

@@ -90,6 +90,7 @@ public static class GoalService
     public static void AccomplishGoal()
     {
 
+
         //show the uncompleted goals
         Console.WriteLine("Your current goals are: ");
         for (int i = 0; i < _allGoals.Count; i++)

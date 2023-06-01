@@ -44,7 +44,7 @@ public static class QuizService
         _currentCorrectAnswer = 0;
         var quiz = new Quiz();
 
-        Console.WriteLine($"Welcome to the quiz. Practice converting units for {_categoryForQuiz.Name}.");
+        Console.WriteLine($"Welcome to the quiz. Practice converting units for {_categoryForQuiz.Name.ToLower()}.");
         Console.WriteLine("Try to give your decimal answers to at least two decimal places for better accuracy.");
 
         Console.WriteLine();

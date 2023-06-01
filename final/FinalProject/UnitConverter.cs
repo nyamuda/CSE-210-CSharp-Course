@@ -189,7 +189,7 @@ public class UnitConverter : Animation
 
 
     //The API returns results like "1000 grams" or "5.86 meters"
-    //Sometimes We are only interested in the numerical value
+    //Sometimes we are only interested in the numerical value
     //The following function extracts the number
     public double ExtractNumberFromResult(string resultString)
     {
@@ -203,7 +203,7 @@ public class UnitConverter : Animation
             return number;
         }
 
-        return 0; // or throw an exception, depending on your requirement
+        return 0;
     }
 
 }

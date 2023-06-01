@@ -1,4 +1,7 @@
 using System.Text.Json;
+using System.Globalization;
+using System.Linq;
+
 public class UnitConverter : Animation
 {
     public Unit SourceUnit { get; set; }
@@ -7,7 +10,10 @@ public class UnitConverter : Animation
     public double Value { get; set; }
 
     public string SearchQuery { get; set; }
+
     public string Result { get; set; }
+
+
 
 
     public UnitConverter(Unit sourceUnit, Unit targetUnit, double value)
@@ -44,14 +50,24 @@ public class UnitConverter : Animation
                 // Parse the JSON response
                 using JsonDocument jsonDocument = await JsonDocument.ParseAsync(conversionData);
 
+                if (Boolean.Parse(jsonDocument.RootElement.GetProperty("queryresult").GetProperty("success").ToString()))
+                {
+                    //Get an array containing the the result
+                    JsonElement resultArray = jsonDocument.RootElement.GetProperty("queryresult").GetProperty("pods")[1].GetProperty("subpods");
 
-                //Get an array containing the the result
-                JsonElement resultArray = jsonDocument.RootElement.GetProperty("queryresult").GetProperty("pods")[1].GetProperty("subpods");
+
+                    var resultString = resultArray[0].GetProperty("plaintext").ToString();
+
+                    return resultString;
+
+                }
+
+                else
+                {
+                    return "Sorry, something went wrong. Please check your input and try again.";
+                }
 
 
-                var resultString = resultArray[0].GetProperty("plaintext").ToString();
-
-                return resultString;
 
 
             }
@@ -121,7 +137,7 @@ public class UnitConverter : Animation
         }
     }
 
-    public string GetWaitMessage()
+    public virtual string GetWaitMessage()
     {
         List<string> waitMessages = new List<string>
         {
@@ -142,7 +158,7 @@ public class UnitConverter : Animation
         return waitMessages[randValue];
     }
 
-    public string GetDataArrivedMessage()
+    public virtual string GetDataArrivedMessage()
     {
         List<string> arrivedMessages = new List<string>
         {
@@ -163,4 +179,31 @@ public class UnitConverter : Animation
 
         return arrivedMessages[randValue];
     }
+
+    protected void BuildSearchQuery()
+    {
+        SearchQuery = $"convert {Value} {SourceUnit.Name} to {TargetUnit.Name}";
+    }
+
+
+
+
+    //The API returns results like "1000 grams" or "5.86 meters"
+    //Sometimes We are only interested in the numerical value
+    //The following function extracts the number
+    public double ExtractNumberFromResult(string resultString)
+    {
+        // Remove any non-digit or non-decimal separator characters from the string
+        var allowedChars = resultString.Where(c => char.IsDigit(c) || c == '.' || c == ',');
+        string digitsOnly = new string(allowedChars.ToArray());
+
+        // Parse the remaining digits as a double, using the appropriate culture for decimal separator
+        if (double.TryParse(digitsOnly, NumberStyles.Any, CultureInfo.InvariantCulture, out double number))
+        {
+            return number;
+        }
+
+        return 0; // or throw an exception, depending on your requirement
+    }
+
 }

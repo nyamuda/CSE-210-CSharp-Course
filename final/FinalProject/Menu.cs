@@ -6,8 +6,8 @@ public static class Menu
 
         List<string> options = new List<string>
         {
-            "Convert a unit",
-            "Play a unit conversion game",
+            "Convert a Unit",
+            "Challenge Your Knowledge with a Unit Conversion Game",
             "Quit"
         };
 
@@ -63,14 +63,20 @@ public static class Menu
 
     }
 
-    //Display the unit converter menu
+    //Display a list of available categories for the quiz
+    //The function allows the user to select the unit category (e.g., length, weight, volume, etc.) for the quiz.
     public static int DisplayCategoryMenu()
     {
-
+        Console.Clear();
+        QuizService.ClearCategories();
+        //first build the categories
+        QuizService.BuildCategories();
+        Console.WriteLine("Menu Options:");
+        var allCategories = QuizService.GetAllCategories();
         //print the menu of categories
-        for (int i = 0; i < ConverterService.GetAllCategories().Count; i++)
+        for (int i = 0; i < allCategories.Count; i++)
         {
-            Console.WriteLine($"{i + 1}. {ConverterService.GetAllCategories()[i].Name}");
+            Console.WriteLine($"{i + 1}. {allCategories[i].Name}");
 
         }
 
@@ -88,7 +94,7 @@ public static class Menu
             selectedOption = DisplayCategoryMenu();
         }
 
-        while (selectedOption < 1 || selectedOption > ConverterService.GetAllCategories().Count + 1)
+        while (selectedOption < 1 || selectedOption > allCategories.Count + 1)
         {
             Console.WriteLine();
             Console.WriteLine("Invalid option selected. Please try again.");
@@ -99,8 +105,15 @@ public static class Menu
             selectedOption = int.Parse(Console.ReadLine());
         }
 
+        //Add the selected category to the quiz service/store
+        QuizService.SetCategoryForQuiz(allCategories[selectedOption - 1]);
+
         return selectedOption;
 
 
     }
+
+
+
+
 }

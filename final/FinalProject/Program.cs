@@ -7,10 +7,9 @@ class Program
 
         Console.Clear();
         Console.WriteLine("Welcome to MeasureMate!");
-        Console.WriteLine("This program allows you to convert between different units of measurement and offers an interactive quiz where you answer random conversion questions.");
+        Console.WriteLine("This powerful program is designed to provide you with a seamless and efficient way to convert between various units of measurement.");
+        Console.WriteLine("Whether you need to convert lengths, weights, temperatures, volumes, or more, our unit converter has got you covered.");
 
-        //First, we build the unit categories
-        ConverterService.BuildCategories();
 
         //We display the root menu
         int rootMenuOption = Menu.DisplayRootMenu();
@@ -21,6 +20,15 @@ class Program
             if (rootMenuOption == 1)
             {
                 await ConverterService.ConvertValue();
+                rootMenuOption = Menu.DisplayRootMenu();
+            }
+            //if the user wants to play the quiz
+            if (rootMenuOption == 2)
+            {
+                //display the unit categories
+                Menu.DisplayCategoryMenu();
+                //start the quiz
+                await QuizService.StartQuizForCategory();
                 rootMenuOption = Menu.DisplayRootMenu();
             }
         }
